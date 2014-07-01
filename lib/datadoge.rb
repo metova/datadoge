@@ -1,7 +1,14 @@
-require "datadoge/version"
-require "statsd"
+require 'datadoge/version'
+require 'gem_config'
+require 'statsd'
 
 module Datadoge
+  include GemConfig::Base
+
+  with_configuration do
+    has :environments, classes: Array, default: ['production']
+  end
+
   class Railtie < Rails::Railtie
     initializer "datadoge.configure_rails_initialization" do |app|
       $statsd = Statsd.new
@@ -22,7 +29,7 @@ module Datadoge
       end
 
       ActiveSupport::Notifications.subscribe /performance/ do |name, start, finish, id, payload|
-        send_event_to_statsd(name, payload) if Rails.env == 'production'
+        send_event_to_statsd(name, payload) if Datadoge.configuration.environments.include?(Rails.env)
       end
 
       def send_event_to_statsd(name, payload)

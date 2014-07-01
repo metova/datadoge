@@ -23,8 +23,14 @@ Or install it yourself as:
 
 ## Usage
 
-Performance metrics are only reported to Datadog from production environments which have the
+By default, performance metrics are only reported to Datadog from production environments which have the
 [Datadog agent](https://app.datadoghq.com/account/settings#agent) installed.
+
+To enable Datadog reporting in non-production environments, add the following to an initializer:
+
+    Datadoge.configure do |config|
+      config.environments = ['staging', 'production']
+    end
 
 ## Contributing
 
