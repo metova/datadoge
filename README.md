@@ -2,7 +2,7 @@
 
 This gem is notified of basic performance metrics for a Rails application, and sends the measurements to DataDog.
 
-Many thanks [mm53bar](https://github.com/mm53bar) for the groundwork laid in [this gist](https://gist.github.com/mm53bar/4674071).
+Many thanks to [mm53bar](https://github.com/mm53bar) for the groundwork laid in [this gist](https://gist.github.com/mm53bar/4674071).
 
 ## Installation
 
