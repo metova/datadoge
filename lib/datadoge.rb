@@ -24,8 +24,8 @@ module Datadoge
         status = event.payload[:status]
         tags = [controller, action, format, host]
         ActiveSupport::Notifications.instrument :performance, :action => :timing, :tags => tags, :measurement => "request.total_duration", :value => event.duration
-        ActiveSupport::Notifications.instrument :performance, :action => :timing, :tags => tags, :measurement => "database.query.time", :value => event.payload[:db_runtime]
-        ActiveSupport::Notifications.instrument :performance, :action => :timing, :tags => tags, :measurement => "web.view.time", :value => event.payload[:view_runtime]
+        ActiveSupport::Notifications.instrument :performance, :action => :timing, :tags => tags,  :measurement => "database.query.time", :value => event.payload[:db_runtime]
+        ActiveSupport::Notifications.instrument :performance, :action => :timing, :tags => tags,  :measurement => "web.view.time", :value => event.payload[:view_runtime]
         ActiveSupport::Notifications.instrument :performance, :tags => tags,  :measurement => "request.status.#{status}"
       end
 
