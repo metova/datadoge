@@ -32,6 +32,10 @@ To enable Datadog reporting in non-production environments, add the following to
       config.environments = ['staging', 'production']
     end
 
+Override the default metric name with the following configuration:
+
+    config.metric = :rails_performance
+
 ## Contributing
 
 1. Fork it ( https://github.com/metova/datadoge/fork )

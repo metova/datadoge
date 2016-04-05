@@ -7,6 +7,7 @@ module Datadoge
 
   with_configuration do
     has :environments, classes: Array, default: ['production']
+    has :metric, classes: [Symbol, String], default: :performance
   end
 
   class Railtie < Rails::Railtie
@@ -22,10 +23,11 @@ module Datadoge
         host = "host:#{ENV['INSTRUMENTATION_HOSTNAME']}"
         status = event.payload[:status]
         tags = [controller, action, format, host]
-        ActiveSupport::Notifications.instrument :performance, :action => :timing, :tags => tags, :measurement => "request.total_duration", :value => event.duration
-        ActiveSupport::Notifications.instrument :performance, :action => :timing, :tags => tags,  :measurement => "database.query.time", :value => event.payload[:db_runtime]
-        ActiveSupport::Notifications.instrument :performance, :action => :timing, :tags => tags,  :measurement => "web.view.time", :value => event.payload[:view_runtime]
-        ActiveSupport::Notifications.instrument :performance, :tags => tags,  :measurement => "request.status.#{status}"
+        metric = Datadoge.configuration.metric
+        ActiveSupport::Notifications.instrument metric, :action => :timing, :tags => tags, :measurement => "request.total_duration", :value => event.duration
+        ActiveSupport::Notifications.instrument metric, :action => :timing, :tags => tags, :measurement => "database.query.time", :value => event.payload[:db_runtime]
+        ActiveSupport::Notifications.instrument metric, :action => :timing, :tags => tags, :measurement => "web.view.time", :value => event.payload[:view_runtime]
+        ActiveSupport::Notifications.instrument metric, :tags => tags,  :measurement => "request.status.#{status}"
       end
 
       ActiveSupport::Notifications.subscribe /performance/ do |name, start, finish, id, payload|
