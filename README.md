@@ -32,6 +32,11 @@ To enable Datadog reporting in non-production environments, add the following to
       config.environments = ['staging', 'production']
     end
 
+To add additional tags, add the following to the configuration:
+
+    config.tags = ['role:myapp', 'host:myapp-1', 'region:east']
+
+
 ## Contributing
 
 1. Fork it ( https://github.com/metova/datadoge/fork )
