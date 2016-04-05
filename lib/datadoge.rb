@@ -7,7 +7,7 @@ module Datadoge
 
   with_configuration do
     has :environments, classes: Array, default: ['production']
-    has :metric, classes: [Symbol, String], default: :performance
+    has :metric, classes: [Symbol, String], default: 'Performance'
   end
 
   class Railtie < Rails::Railtie
@@ -39,7 +39,7 @@ module Datadoge
         measurement = payload[:measurement]
         value = payload[:value]
         tags = payload[:tags]
-        key_name = "#{name.to_s.capitalize}.#{measurement}"
+        key_name = "#{name.to_s}.#{measurement}"
         if action == :increment
           $statsd.increment key_name, :tags => tags
         else
