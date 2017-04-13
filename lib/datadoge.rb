@@ -1,17 +1,18 @@
 require 'datadoge/version'
 require 'gem_config'
-require 'statsd'
+require 'datadog/statsd'
 
 module Datadoge
   include GemConfig::Base
 
   with_configuration do
     has :environments, classes: Array, default: ['production']
+    has :client, classes: Datadog::Statsd, default: nil
   end
 
   class Railtie < Rails::Railtie
     initializer "datadoge.configure_rails_initialization" do |app|
-      $statsd = Statsd.new
+      $statsd = Datadoge.configuration.client || Datadog::Statsd.new
 
       ActiveSupport::Notifications.subscribe /process_action.action_controller/ do |*args|
         event = ActiveSupport::Notifications::Event.new(*args)
