@@ -33,9 +33,13 @@ module Datadoge
       end
 
       def send_event_to_statsd(name, payload)
+        value = payload[:value]
+        if value.nil?
+          return # Datadog gets really grumpy with nil values.
+        end
+
         action = payload[:action] || :increment
         measurement = payload[:measurement]
-        value = payload[:value]
         tags = payload[:tags]
         key_name = "#{name.to_s.capitalize}.#{measurement}"
         if action == :increment
