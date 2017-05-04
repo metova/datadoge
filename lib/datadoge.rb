@@ -34,8 +34,8 @@ module Datadoge
 
       def send_event_to_statsd(name, payload)
         value = payload[:value]
-        if value.nil?
-          return # Datadog gets really grumpy with nil values.
+        if value.blank?
+          return # Datadog gets really grumpy with blank/nil Ruby values.
         end
 
         action = payload[:action] || :increment
