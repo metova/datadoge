@@ -33,9 +33,12 @@ module Datadoge
       end
 
       def send_event_to_statsd(name, payload)
+        # Datadog gets really grumpy with blank/nil Ruby values.
+        value = payload[:value]
+        return if value.blank?
+
         action = payload[:action] || :increment
         measurement = payload[:measurement]
-        value = payload[:value]
         tags = payload[:tags]
         key_name = "#{name.to_s.capitalize}.#{measurement}"
         if action == :increment
